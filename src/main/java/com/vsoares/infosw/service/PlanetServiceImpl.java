@@ -2,6 +2,7 @@ package com.vsoares.infosw.service;
 
 import com.vsoares.infosw.model.Planet;
 import com.vsoares.infosw.repository.PlanetRepository;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +28,7 @@ public class PlanetServiceImpl implements PlanetService {
                         .toUpperCase()
                         .stripLeading()
                         .stripTrailing());
-        planet.setId(planet.getName().hashCode());
+//        planet.setId(planet.getName().hashCode());
         long appearances = swapiService.getAppearances(planet.getName());
         planet.setAppearances(appearances);
         planetRepository.save(planet);
@@ -36,6 +37,7 @@ public class PlanetServiceImpl implements PlanetService {
 
     @Override
     public List<Planet> listPlanets() {
+        List<Planet> planetas = planetRepository.findAll();
         return  planetRepository.findAll();
     }
 
@@ -45,8 +47,8 @@ public class PlanetServiceImpl implements PlanetService {
     }
 
     @Override
-    public Planet getById(Long id) {
-        Optional<Planet> planet = planetRepository.findById(id);
+    public Planet getById(String id) {
+        Optional<Planet> planet = planetRepository.findById(new ObjectId(id));
         if(planet.isPresent()){
             return planet.get();
         } else {
@@ -55,8 +57,8 @@ public class PlanetServiceImpl implements PlanetService {
     }
 
     @Override
-    public Boolean removePlanet(Long id) {
-        Optional<Planet> planet = planetRepository.findById(id);
+    public Boolean removePlanet(String id) {
+        Optional<Planet> planet = planetRepository.findById(new ObjectId(id));
         if(planet.isPresent()){
             planetRepository.delete(planet.get());
             return true;

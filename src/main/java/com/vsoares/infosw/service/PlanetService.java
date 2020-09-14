@@ -9,6 +9,6 @@ public interface PlanetService {
     Planet addPlanet(Planet planet);
     List<Planet> listPlanets();
     Planet getByName(String name);
-    Planet getById(Long id);
-    Boolean removePlanet(Long id);
+    Planet getById(String id);
+    Boolean removePlanet(String id);
 }

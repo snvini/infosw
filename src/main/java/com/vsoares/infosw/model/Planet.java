@@ -3,6 +3,7 @@ package com.vsoares.infosw.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -16,16 +17,21 @@ public class Planet {
         this.name = name;
     }
 
-    public Planet (long id, String name, Long appearances){
-        this.id = id;
+    public Planet ( String name, Long appearances){
+        this.id = new ObjectId();
         this.name = name;
         this.appearances = appearances;
     }
 
     @Id
-    private long id;
+    private ObjectId id;
     private String name;
     private String climate;
     private String terrain;
     private Long appearances;
+
+    public String getId(){
+        return this.id.toString();
+    }
+
 }

@@ -2,6 +2,7 @@ package com.vsoares.infosw.controller;
 
 import com.vsoares.infosw.model.Planet;
 import com.vsoares.infosw.service.PlanetService;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,8 +34,7 @@ public class PlanetController {
     @GetMapping(value = "/{param}")
     public Planet getById(@PathVariable String param) {
         try {
-            Long id = Long.parseLong(param);
-            Planet planet = planetService.getById(id);
+            Planet planet = planetService.getById(param);
             if(planet != null){
                 return planet;
             } else {
@@ -61,8 +61,7 @@ public class PlanetController {
     @DeleteMapping(value = "/{param}")
     public ResponseEntity<?> deletePlanet(@PathVariable String param) {
         try {
-            Long id = Long.parseLong(param);
-            boolean success = planetService.removePlanet(id);
+            boolean success = planetService.removePlanet(param);
             if(success){
                 return new ResponseEntity("Planeta removido com sucesso!", HttpStatus.OK);
             } else {

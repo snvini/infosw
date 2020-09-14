@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ public class PlanetServiceTest {
 
     @Test
     void addPlanetSucess(){
-        final Planet planet = new Planet(1l, "planeta",3l);
+        final Planet planet = new Planet( "planeta",3l);
         when(planetRepository.save(any(Planet.class))).thenReturn(new Planet());
         Planet created = planetService.addPlanet(planet);
         assertThat(created.getId()).isEqualTo(planet.getId());
