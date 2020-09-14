@@ -18,7 +18,7 @@ public class PlanetServiceImpl implements PlanetService {
     private SwapiService swapiService;
 
     @Override
-    public void addPlanet(Planet planet) {
+    public Planet addPlanet(Planet planet) {
         if(planet.getName() == null){
             throw new NullPointerException("name");
         }
@@ -31,6 +31,7 @@ public class PlanetServiceImpl implements PlanetService {
         long appearances = swapiService.getAppearances(planet.getName());
         planet.setAppearances(appearances);
         planetRepository.save(planet);
+        return planet;
     }
 
     @Override

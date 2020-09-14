@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface PlanetService {
 
-    void addPlanet(Planet planet);
+    Planet addPlanet(Planet planet);
     List<Planet> listPlanets();
     Planet getByName(String name);
     Planet getById(Long id);
