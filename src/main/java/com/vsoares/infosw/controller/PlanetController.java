@@ -21,38 +21,32 @@ public class PlanetController {
 
     @GetMapping(value = "/")
     public List<Planet> getPlanets(@RequestParam(required = false) String name) {
-        if(name != null){
-            name = name.toUpperCase();
+        if (name != null) {
             Planet planet = planetService.getByName(name);
             List<Planet> results = new ArrayList<Planet>();
             results.add(planet);
             return results;
         }
-            return planetService.listPlanets();
+        return planetService.listPlanets();
     }
 
     @GetMapping(value = "/{param}")
     public Planet getById(@PathVariable String param) {
-        try {
-            Planet planet = planetService.getById(param);
-            if(planet != null){
-                return planet;
-            } else {
-                throw new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Não foi possível encontrar o planeta com id " + param);
-            }
-        } catch(NumberFormatException nfe) {
+        Planet planet = planetService.getById(param);
+        if (planet != null) {
+            return planet;
+        } else {
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Não foi possível converter o parametro " + param + " em ID");
+                    HttpStatus.NOT_FOUND, "Não foi possível encontrar o planeta com id " + param);
         }
     }
 
     @PostMapping(value = "/")
-    public ResponseEntity<?> saveOrUpdatePlanet(@RequestBody Planet planet) {
-        try{
-            planetService.addPlanet(planet);
-            return new ResponseEntity("Planeta adicionado com sucesso!", HttpStatus.OK);
-        } catch (NullPointerException e){
+    public Planet saveOrUpdatePlanet(@RequestBody Planet planet) {
+        try {
+            Planet response = planetService.addPlanet(planet);
+            return response;
+        } catch (NullPointerException e) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Para postar um planeta é necessário definir o 'name'");
         }
@@ -60,16 +54,11 @@ public class PlanetController {
 
     @DeleteMapping(value = "/{param}")
     public ResponseEntity<?> deletePlanet(@PathVariable String param) {
-        try {
-            boolean success = planetService.removePlanet(param);
-            if(success){
-                return new ResponseEntity("Planeta removido com sucesso!", HttpStatus.OK);
-            } else {
-                return new ResponseEntity("Planeta não encontrado.", HttpStatus.OK);
-            }
-        } catch(NumberFormatException nfe) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Não foi possível converter o parametro " + param + " em ID");
+        boolean success = planetService.removePlanet(param);
+        if (success) {
+            return new ResponseEntity("Planeta removido com sucesso!", HttpStatus.OK);
+        } else {
+            return new ResponseEntity("Planeta não encontrado.", HttpStatus.NOT_FOUND);
         }
     }
 }

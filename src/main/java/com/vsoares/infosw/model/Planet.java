@@ -14,10 +14,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Planet {
 
     public Planet (String name){
+        this.id = new ObjectId();
         this.name = name;
     }
 
-    public Planet ( String name, Long appearances){
+    public Planet (String name, Long appearances){
         this.id = new ObjectId();
         this.name = name;
         this.appearances = appearances;
@@ -31,7 +32,14 @@ public class Planet {
     private Long appearances;
 
     public String getId(){
-        return this.id.toString();
+        if(this.id != null){
+            return this.id.toString();
+        }
+        return null;
+    }
+
+    public void createId(){
+        this.id = new ObjectId();
     }
 
 }

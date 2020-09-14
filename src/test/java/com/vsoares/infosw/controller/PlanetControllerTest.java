@@ -47,7 +47,7 @@ public class PlanetControllerTest {
 
         Planet planet = planetRepository.findByName("TATOOINE");
         assertThat(planet.getAppearances()).isEqualTo(correctMovieAppearences);
-        mockMvc.perform(delete("/planets/{id}", 405610169l)
+        mockMvc.perform(delete("/planets/{id}", planet.getId())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
@@ -57,7 +57,6 @@ public class PlanetControllerTest {
 
     @Test
     void postAndGetByIDSuccessTest()throws Exception {
-        Long id = 405610169L;
         Planet mockPlanet = new Planet("Tatooine");
 
         mockMvc.perform(post("/planets/")
@@ -65,7 +64,9 @@ public class PlanetControllerTest {
                 .content(objectMapper.writeValueAsString(mockPlanet)))
                 .andExpect(status().isOk());
 
-        mockMvc.perform(get("/planets/{id}", id)
+        Planet planet = planetRepository.findByName("TATOOINE");
+
+        mockMvc.perform(get("/planets/{id}", planet.getId())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -85,8 +86,8 @@ public class PlanetControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-//                .andExpect(jsonPath("$[0].id").value("405610169"));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].id").isNotEmpty());
     }
 
     @Test
@@ -94,7 +95,7 @@ public class PlanetControllerTest {
         mockMvc.perform(get("/planets/abc")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -110,6 +111,6 @@ public class PlanetControllerTest {
     void deleteFailTest()throws Exception {
         mockMvc.perform(delete("/planets/{id}", "abc")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 }
