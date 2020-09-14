@@ -2,12 +2,16 @@ package com.vsoares.infosw.service;
 
 import com.vsoares.infosw.model.Planet;
 import com.vsoares.infosw.repository.PlanetRepository;
+import com.vsoares.infosw.utils.StringUtils;
+import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +24,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
 public class PlanetServiceTest {
 
     @Mock
@@ -33,7 +38,7 @@ public class PlanetServiceTest {
 
     @Test
     void addPlanetSucess(){
-        final Planet planet = new Planet( "planeta",3l);
+        final Planet planet = new Planet("planeta",3l);
         when(planetRepository.save(any(Planet.class))).thenReturn(new Planet());
         Planet created = planetService.addPlanet(planet);
         assertThat(created.getId()).isEqualTo(planet.getId());
@@ -67,7 +72,7 @@ public class PlanetServiceTest {
         String name = "planeta";
         Planet planeta = new Planet(name);
         planeta = planetService.addPlanet(planeta);
-        given(planetRepository.findByName(name)).willReturn(planeta);
+        given(planetService.getByName(name)).willReturn(planeta);
         Planet expected = planetService.getByName(name);
         assertThat(expected).isNotNull();
     }
