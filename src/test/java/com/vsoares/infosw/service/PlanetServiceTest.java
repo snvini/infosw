@@ -66,7 +66,6 @@ public class PlanetServiceTest {
         String name = "planeta";
         Planet planeta = new Planet(name);
         planeta = planetService.addPlanet(planeta);
-
         given(planetRepository.findByName(name)).willReturn(planeta);
         Planet expected = planetService.getByName(name);
         assertThat(expected).isNotNull();

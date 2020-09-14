@@ -23,7 +23,6 @@ public class SwapiServiceImpl implements SwapiService{
     @Cacheable("resultsSwapi")
     @Override
     public int getAppearances(String name) {
-
         int appearances = 0;
 
         HttpRequest request = HttpRequest.newBuilder()
