@@ -2,7 +2,6 @@ package com.vsoares.infosw.controller;
 
 import com.vsoares.infosw.model.Planet;
 import com.vsoares.infosw.service.PlanetService;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
