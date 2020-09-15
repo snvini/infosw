@@ -24,7 +24,7 @@ public class SwapiServiceImpl implements SwapiService{
     @Override
     public int getAppearances(String name) {
         int appearances = 0;
-        name.replace(" ", "%20");
+        name = name.replace(" ", "%20");
 
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
